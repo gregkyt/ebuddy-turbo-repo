@@ -1,0 +1,135 @@
+# {
+#     "kind": "identitytoolkit#VerifyPasswordResponse",
+#     "localId": "iBKiGxCxhuZl65EA70k5KqUO6BD3",
+#     "email": "abc@gmail.com",
+#     "displayName": "",
+#     "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg1NzA4MWNhOWNiYjM3YzIzNDk4ZGQzOTQzYmYzNzFhMDU4ODNkMjgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZWJ1ZGR5LTQ4YzNmIiwiYXVkIjoiZWJ1ZGR5LTQ4YzNmIiwiYXV0aF90aW1lIjoxNzQ1MjI2MTI5LCJ1c2VyX2lkIjoiaUJLaUd4Q3hodVpsNjVFQTcwazVLcVVPNkJEMyIsInN1YiI6ImlCS2lHeEN4aHVabDY1RUE3MGs1S3FVTzZCRDMiLCJpYXQiOjE3NDUyMjYxMjksImV4cCI6MTc0NTIyOTcyOSwiZW1haWwiOiJhYmNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFiY0BnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.vFMaaioejpFUkmlWy5yyYgFc2sAupY-TgQdhBv4i_HUPqZ-eyx4Y7WOxUTAfPw91v3XrQQ4sOP1T5yltbvkuD8NYjcrh6UOYzE5oDWA49mHR0E5WH0ioGg4oUYqtF5jxOeiL3WB2fm-OrytIVjFEmhMLqpY4RqEFFTSa_r-68W1Tva0nHCG9H9t5n2IRbEgK0WMcqu1hPZtunKwQpyJbIlpcw9RE65vudw3Lqmct8h8Y-Af2OMp0T9ucy9kiC-hdJ-tZSzpl9YDYGFNz71oJ1oip-HSCLwy-HHz9_2FSjP7TeT-qfEjv3b5ChKRmkTz9V8Gi5Jww0-RTHvLboeGDuQ",
+#     "registered": true,
+#     "refreshToken": "AMf-vBxS-cINOHHN8KXGd5Gx5K-IpleGg5q4oIki6bvbfxYn33J9ShMnGa-U23X1eC_VLqPOf2jD0vo83RhN_cCYDPs5FsG4TQxCwhsmfHb87sfQ4ge_59lG5JpBGrGrkvFh8u-lGum6QLvcuGF81L4whrkhlQ_SUfxy1MRTNpMtCYzckuXMjZXAtvu77Dpc0VurAlmwb_PX",
+#     "expiresIn": "3600"
+# }
+
+# {
+#   "kind": "identitytoolkit#GetAccountInfoResponse",
+#   "users": [
+#     {
+#       "localId": "iBKiGxCxhuZl65EA70k5KqUO6BD3",
+#       "email": "abc@gmail.com",
+#       "passwordHash": "UkVEQUNURUQ=",
+#       "emailVerified": false,
+#       "passwordUpdatedAt": 1745226116112,
+#       "providerUserInfo": [
+#         {
+#           "providerId": "password",
+#           "federatedId": "abc@gmail.com",
+#           "email": "abc@gmail.com",
+#           "rawId": "abc@gmail.com"
+#         }
+#       ],
+#       "validSince": "1745226116",
+#       "disabled": false,
+#       "lastLoginAt": "1745226129696",
+#       "createdAt": "1745226116112",
+#       "lastRefreshAt": "2025-04-21T09:02:09.696Z"
+#     }
+#   ]
+# }
+
+# "error": {
+#     "code": 400,
+#     "message": "INVALID_LOGIN_CREDENTIALS",
+#     "errors": [
+#       {
+#         "message": "INVALID_LOGIN_CREDENTIALS",
+#         "domain": "global",
+#         "reason": "invalid"
+#       }
+#     ]
+#   }
+
+openapi: 3.0.3
+info:
+  title: VINARDS Open API
+  description: VINARDS Service
+  version: v1
+servers:
+  - url: https://dev-api.vinards.com
+paths:
+  /v1/users:
+    get:
+      tags:
+        - UserService
+      summary: Get Users
+      description: Get Users
+      operationId: UserService_GetUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/usersResponse"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v1ErrorResponse"
+components:
+  schemas:
+    errorData:
+      type: object
+      properties:
+        message:
+          type: string
+        domain:
+          type: string
+        reason:
+          type: string
+    v1ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int32
+            message:
+              type: string
+            errors:
+              type: array
+              items:
+                $ref: "#/components/schemas/errorData"
+    signInPayload:
+      type: object
+      properties:
+        email:
+          type:
+            - string
+        password:
+          type:
+            - string
+    userData:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+    usersResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/userData"
+    userResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          allOf:
+            - $ref: "#/components/schemas/userData"
